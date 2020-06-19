@@ -1,0 +1,47 @@
+*{
+    width: auto;
+    margin: auto;
+}
+
+body{
+    background: url(https://c.pshere.com/photos/09/71/background_background_image_blue_sky_climb_cold_dawn_daylight_desktop_backgrounds-1000003.jpg!d) no-repeat ;
+    background-size: cover;
+}
+
+.form-container{
+    border: solid 1px grey;
+    height: 150px;
+    width: 350px;
+    display: grid;
+    text-align: center;
+    margin: auto;
+    margin-top: 130px;
+    border-radius: 5px;
+}
+
+h2{
+    font-family: sans-serif;
+    color: white;
+    text-shadow: -1px 1px black;
+}
+
+button{
+    margin-bottom: 10px;
+}
+
+input, button{
+    width: 80%;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.button-form{
+    background-color: lightblue;
+    border: solid 1px grey;
+}
+
+.button-form:hover{
+    transition: 3s all;
+    filter: blur(1px);
+    cursor: pointer;
+}
