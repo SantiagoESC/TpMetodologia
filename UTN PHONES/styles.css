@@ -1,6 +1,7 @@
 *{
-    width: auto;
-    margin: auto;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
 }
 
 body{
@@ -44,4 +45,17 @@ input, button{
     transition: 3s all;
     filter: blur(1px);
     cursor: pointer;
+}
+
+.table-bills {
+    display: inline-block;
+
+}
+
+#from, #to {
+    display: inline-block;
+}
+
+.noShow {
+    display: none;
 }

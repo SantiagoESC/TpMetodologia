@@ -1,66 +1,72 @@
-function clientSave() {
-        var jsonSaveDadosUser = {                                   //Toma el usuario y lo convierte en un json 
-            "user": $("#user").val(),
-            "password": $("#password").val(),
-        };
-    
-    if (userValidate()) {                                           //Funcion para validar datos del usuario
+const app = new Vue({
+  el: "#app",
+  data: {
+    userName: "",
+    password: "",
+    jsonUser: "{}",
+    urlSaveDadosUser: "http://demo7294697.mockable.io/login",
+    urlGetBills: "http://demo7294697.mockable.io/api/bills/",
+    urlBadLogin: "http://demo7294697.mockable.io/badLogin/",
+    url: "",
+    showLogin: true,
+    authorization: "",
 
-        var urlSaveDadosUser = "Aca va la url de tu base de datos"; 
+    bills: [],
+    noBills: false,
+    from: "",
+    to: ""
+  },
+  methods: {
+    clientLogin: function() {
+      this.jsonUser =
+        '{"user" : ' + this.userName + ', "password" :' + this.password + "}";
 
-        $.ajax({
-            contentType: "application/json; charset=utf-8",
-            headers: {
-                'Accept': 'application/vnd.vtex.ds.v10+json',
-                'Content-Type': 'application/json'
-            },
-            data: JSON.stringify(jsonSaveDadosUser),                //Convierte el Json en un string 
-            type: 'PATCH',                                          //POST, GET, PUT
-            url: urlSaveDadosUser,                                  //Manda los datos del user a la url 
-
-            success: function(data) {                               //Si los datos son correctos, manda un mensaje de success
-                $("div#messageSuccess").removeClass("hide");
-                $("#name").val("");                                 //vacio los campos del form
-                $("#password").val("");
-            },
-            error: function(data) {
-                $("div#messageError").removeClass("hide");          //Sin conexion, error 505
+      if (this.userValidate) {
+        this.$http.post(this.url, this.jsonUser).then(
+          function(response) {
+            this.authorization = response.body.authorization;
+            app.getBills();
+            this.showLogin = false;
+          },
+          function(response) {
+            if ((response.status = 403)) {
+              alert("Usuario y/o contraseña incorrecta");
+            } else {
+              alert("Ocurrio un problema al logearse");
             }
-        });
-    }
-}
 
+            this.userName = "";
+            this.password = "";
+          }
+        );
+      }
+    },
 
-
-function userValidate() {                                           //Validas un usuario
-    var validation = true;
-    var name = $("#name").val();                                    //Toma el nombre y la contraseña 
-    var password = $("#password").val();
-
-    $("div#messageSuccess").addClass("hide");                       //Se juntan los mensajes y se ocultan de forma default
-    $("div#messageError").addClass("hide");
-    $("div#validationError").addClass("hide");
-   
-        if (!name) {                                                //Si esta el campo del nombre esta vacio se pone en rojo  
-            $("#name").addClass("red");
-            validation = false;
-        } else {
-            $("#name").removeClass("red");
+    getBills: function() {
+      this.$http.get(this.urlGetBills, this.authorization).then(
+        function(response) {
+          this.bills = response.body;
+        },
+        function() {
+          console.log("Fallo");
         }
-
-        if (!password) {                                            //Si esta el campo del la contraseña esta vacio se pone en rojo 
-            $("#password").addClass("red");
-            validation = false;
-        } else {
-            $("#password").removeClass("red");
-        }
-
-    if (validation) {                                               //Si la validacion es correcta, escondes el error y mostrar el mensaje success
-        $("div#validationError").addClass("hide");
-        $("div#validationSucces").removeClass("hide");
-    } else {
-        $("div#validationError").removeClass("hide");
+      );
     }
-    return validation                                               //Y devuelve la validacion TRUE or FALSE
-    
-}
+  },
+
+  computed: {
+    userValidate() {
+      if (this.userName == "" || this.password == "") {
+        return false;
+      }
+
+      if (this.userName == "asd" && this.password == "asd") {
+        this.url = this.urlBadLogin;
+      } else {
+        this.url = this.urlSaveDadosUser;
+      }
+
+      return true;
+    }
+  }
+});

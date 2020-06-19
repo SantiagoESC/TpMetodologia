@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="styles.css">
+    <title>UTP PHONES</title>
+
+
+
+</head>
+<body>
+	
+	<div id="app">
+		
+		<div class="form-container" :class="{'form-container' : showLogin , 'noShow' : !showLogin}">
+            <h2>UTN Phones Login</h2>
+            <form v-on:submit.prevent class="form-login" >
+                <input  type="text"  v-model="userName" placeholder="Usuario..." required >
+                <input  type="text"  v-model="password" placeholder="Password..." required>
+                <button tyoe="submit" class="button-form" @click="clientLogin">Login</button>
+            </form>
+        </div>
+
+
+        <div :class="{'table-bills' : !showLogin , 'noShow' : showLogin}">
+            
+                <main >
+                        <div>
+                
+                            <h1 >Facturas de llamadas realizadas.</h1>
+                                
+                                <table border="1">
+                                    <thead >
+                                        <tr>
+                                            
+                                            <th>Linea</th>
+                                            <th>Cantidad de llamadas </th>
+                                            <th>Precio total</th>
+                                            <th>Fecha de Emisión</th>
+                                            <th>Fecha de Vencimiento</th>
+                                            <th>Esta Paga</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="bill of bills">
+                                            <span v-if="noBills">El usuario no tiene facturas</span>
+                                            <td>{{bill.numberLine}}</td>
+                                            <td>{{bill.quantityOfCall}}</td>
+                                            <td>{{bill.TotalPrice}}</td>
+                                            <td>{{bill.date}}</td>
+                                            <td>{{bill.dateExpiration}}</td>
+                                            <td>
+                                                <span v-if="bill.isPaid ===true">SI</span>
+                                                <span v-if="bill.isPaid ===false">NO</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                   
+                                </table>
+                        
+                        </div>
+                    </main>
+                
+
+        </div>
+
+        
+
+    </div>
+    
+
+
+
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/vue.resource/1.3.1/vue-resource.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
