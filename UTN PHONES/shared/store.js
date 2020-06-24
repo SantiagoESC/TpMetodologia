@@ -4,13 +4,23 @@ const store = new Vuex.Store({
         authorization : "",
         username : "",
         password : "",
-        loginJson : ""
+        loginJson : "",
+
+
+
+        /*Bills shared*/
+        bills : []
         
     },
     mutations : {
         setAuthorization(state, token){
             state.authorization = token;
         },
+
+        setBills(state, billsToset){
+            state.bills = billsToset;
+        },
+  
 
         loginJson(state){
             state.loginJson =  '{ "username" : "'+ state.username + '", "password" : "' + state.password +'"}'
@@ -22,25 +32,50 @@ const store = new Vuex.Store({
         
         login : async function ({commit, state } ){
 
-            
-            commit('loginJson');
-            alert(state.loginJson);
+            if (state.username && state.password){
 
-            app.$http.post('http://localhost:8080/login/', state.loginJson,{
-                headers : {
-                   "Authrization" : "*" 
-                } 
-            }).then(
+                commit('loginJson');
+            
+
+                app.$http.post('http://localhost:8080/login/', state.loginJson).then(
+                    function(response) {
+                        
+                        commit('setAuthorization',response.body.autorization);
+                        alert("exito");
+                        console.log(response);
+    
+                    },
+                    function(response) {
+                        alert("Fallo");
+                        console.log(response);
+                        if (response.status == 403){
+                            alert("Usuario y/o contraseña incorrecto");
+                        }
+                    }
+                );
+
+            }
+        },
+
+        getBills : async function ({commit, state } ){
+            
+            app.$http.get('http://localhost:8080/api/bill').then(
                 function(response) {
                     alert("Exito");
+                    console.log(response);
+                    
+                    
                 },
                 function(response) {
                  alert("Fallo");
+                 
                 }
               );
         }
 
-    }
+    }, 
+
+    
 
 
 
