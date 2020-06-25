@@ -10,7 +10,7 @@ Vue.component('login', {
            
             <input class="input"  type="text"  v-model="username" placeholder="Usuario..." required >
             <input class="input" type="text"  v-model="password" placeholder="Password..." required>
-            <button type="submit" class="button-form  button" @click="login">Login</button>
+            <button type="submit" class="button-form  button" @click="login">Enter</button>
         </form>
     </div>
     `,

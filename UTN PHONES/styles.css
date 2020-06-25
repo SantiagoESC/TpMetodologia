@@ -14,7 +14,7 @@ body{
 .form-container{
     border: solid 1px grey;
     height: 250px;
-    width: 350px;
+    width: 400px;
     display: grid;
     text-align: center;
     margin: auto;
@@ -53,6 +53,10 @@ body{
 
 .noShow {
     display: none;
+}
+
+.inline-form {
+    display: inline;
 }
 
 /* <--------------------CSS TABLE------------------------------------------>*/

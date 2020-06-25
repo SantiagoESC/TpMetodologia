@@ -9,7 +9,9 @@ const store = new Vuex.Store({
 
 
         /*Bills shared*/
-        bills : []
+        bills : [],
+        from: null,
+        to: null
         
     },
     mutations : {
@@ -30,7 +32,7 @@ const store = new Vuex.Store({
     },
     actions : { //aca se manejan las llamadas a la API
         
-        login : async function ({commit, state } ){
+        login : async function ({commit, state, dispatch } ){
 
             if (state.username && state.password){
 
@@ -41,15 +43,14 @@ const store = new Vuex.Store({
                     function(response) {
                         
                         commit('setAuthorization',response.body.autorization);
-                        alert("exito");
-                        console.log(response);
+                        dispatch('getBills');
     
                     },
                     function(response) {
                         alert("Fallo");
                         console.log(response);
                         if (response.status == 403){
-                            alert("Usuario y/o contraseña incorrecto");
+                            alert("Usuario y/o constraseña incorrecto. Reingrese");
                         }
                     }
                 );
@@ -57,21 +58,48 @@ const store = new Vuex.Store({
             }
         },
 
-        getBills : async function ({commit, state } ){
+        getBillsFiltered  : async function ({commit, state } ){
+           
             
-            app.$http.get('http://localhost:8080/api/bill').then(
-                function(response) {
-                    alert("Exito");
-                    console.log(response);
-                    
-                    
-                },
-                function(response) {
-                 alert("Fallo");
-                 
-                }
-              );
+
+            if (state.from && state.to){
+                app.$http.get('http://localhost:8080/api/bill', {params : {from : state.from, to : state.to}}).then(
+                    function(response) {
+                        commit("setBills", response.body);
+                        
+                        console.log(response);
+                        
+                        
+                    },
+                    function(response) {
+                     alert("Fallo");
+                     
+                    }
+                  );
+            }
+
+        },
+        getBills: async function ({commit, state } ){
+          
+           
+                app.$http.get('http://localhost:8080/api/bill').then(
+                    function(response) {
+                        commit("setBills", response.body);
+                        console.log(response);
+                        
+                        
+                    },
+                    function(response) {
+                     alert("Fallo");
+                     
+                    }
+                  );
+            
+
         }
+
+   
+        
 
     }, 
 
