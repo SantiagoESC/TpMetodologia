@@ -59,3 +59,25 @@ input, button{
 .noShow {
     display: none;
 }
+
+
+/* Tabla */
+
+.tabla-facturas {
+    margin: auto;
+    align-items: center;
+    display: grid;
+   
+}
+
+h2.titulo-tabla {
+    margin-bottom: 20px!important;
+    margin: auto;
+}
+
+.table.table-condensed {
+    border: solid 1px black;
+    width: 70%;
+    margin: auto;
+    background: white;
+}
